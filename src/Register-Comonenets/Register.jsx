@@ -95,6 +95,9 @@ function Register() {
         <button className="btn btn-success mt-3" onClick={registerUser}>
           Register
         </button>
+        <p>
+  Already have an account? <a href="/">Login</a>
+</p>
       </div>
     </div>
   );

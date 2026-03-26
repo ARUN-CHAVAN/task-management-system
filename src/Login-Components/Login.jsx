@@ -51,8 +51,10 @@ if(!res.data || typeof res.data !=="string" || res.data.split(".").length !==3){
           <div className="alert alert-danger mt-2 p-2">{error}</div>
         )
       }
-
       <button onClick={handleLogin}>Login</button>
+      <p>
+  Don’t have an account? <a href="/register">Register</a>
+</p>
     </div>
   );
 }

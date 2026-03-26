@@ -1,4 +1,5 @@
 import { useEffect, useState ,useRef} from "react";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import API from "../service/api";
 
@@ -12,6 +13,7 @@ function Dashboard() {
   const [users, setUsers] = useState([]);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const formRef = useRef(null);
+  const navigate=useNavigate();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -37,7 +39,7 @@ function Dashboard() {
     const token = localStorage.getItem("token");
     if (!token || token.split(".").length !==3) {
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/dashboard";
       return;
     }
     fetchAll();
@@ -117,7 +119,7 @@ if (!title.trim() || !description.trim()) {
 
   const logout = () => {
     localStorage.clear();
-    window.location.href = "/login";
+    navigate("/login");
   };
  const handleEdit = (task) => {
   setTitle(task.title);
