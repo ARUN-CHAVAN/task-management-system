@@ -10,7 +10,7 @@ function TaskItem({ task, updateStatus, deleteTask, onEdit }) {
 
     if (task.deadline < today) return "Overdue";
     if (task.deadline === today) return "Today";
-    return "Upcoming";
+    if(task.deadline>today) return "Upcoming";
   };
   const deadlineStatus = getDeadlineStatus(task);
   return (
