@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8081",
+  baseURL: "http://task-backend-production-9d85.up.railway.app",
 });
 
 API.interceptors.request.use((req) => {

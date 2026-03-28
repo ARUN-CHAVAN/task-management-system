@@ -11,7 +11,7 @@ function Login() {
         setError("Email and Password required");
         return;
       }
-      const res = await axios.post("http://localhost:8081/auth/login", {
+      const res = await axios.post("https://task-backend-production-9d85.up.railway.app/auth/login", {
         email,
         password,
       });

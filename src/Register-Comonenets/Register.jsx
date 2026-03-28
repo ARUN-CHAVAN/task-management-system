@@ -35,7 +35,7 @@ function Register() {
     }
 
     try {
-      await axios.post("http://localhost:8081/auth/register", {
+      await axios.post("https://task-backend-production-9d85.up.railway.app/auth/register", {
         name,
         email,
         password,
