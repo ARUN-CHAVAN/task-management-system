@@ -19,11 +19,13 @@ function TaskSection({
   tasks,
   updateStatus,
   deleteTask,
+  successMsg,
   formRef,
 }) {
   return (
     <div className="col-md-8 " ref={formRef}>
-      {/* Project Dropdown */}
+      {successMsg &&(<div className="alert alert-success text-center">{successMsg}</div>
+        )}
       <select
         className="form-control mb-2"
         value={selectedProjectId}
@@ -37,7 +39,6 @@ function TaskSection({
         ))}
       </select>
 
-      {/* User Dropdown */}
       <select
         className="form-control mb-2"
         value={selectedUserId}

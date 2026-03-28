@@ -22,6 +22,7 @@ function Dashboard() {
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [selectedUserId, setSelectedUserId] = useState("");
   const [deadline,setDeadline]=useState("");
+  const [successMsg,setSuccessMsg]=useState("");
 
   const fetchAll = async () => {
     const [taskRes, projRes, userRes] = await Promise.all([
@@ -29,7 +30,7 @@ function Dashboard() {
       API.get("/projects"),
       API.get("/users"),
     ]);
-
+ 
     setTasks(taskRes.data);
     setProjects(projRes.data);
     setUsers(userRes.data);
@@ -39,7 +40,7 @@ function Dashboard() {
     const token = localStorage.getItem("token");
     if (!token || token.split(".").length !==3) {
       localStorage.clear();
-      window.location.href = "/dashboard";
+      window.location.href = "/login";
       return;
     }
     fetchAll();
@@ -69,7 +70,9 @@ if (!title.trim() || !description.trim()) {
       assignedTo: selectedUserId ? { id: selectedUserId } : null,
       deadline : deadline || null,
     });
+    setSuccessMsg("Task updated successfully");
   } else {
+
     // CREATE
     await API.post("/tasks", {
       title,
@@ -77,11 +80,10 @@ if (!title.trim() || !description.trim()) {
       status: "pending",
       project: selectedProjectId ? { id: selectedProjectId } : null,
       assignedTo: selectedUserId ? { id: selectedUserId } : null,
-      
     });
+    setSuccessMsg("Task added successfully");
   }
-
-  // reset form
+ setTimeout(()=>setSuccessMsg(""),2000);
   setTitle("");
   setDescription("");
   setSelectedProjectId("");
@@ -109,7 +111,9 @@ if (!title.trim() || !description.trim()) {
     });
 
     setProjectName("");
+    setSuccessMsg("Project added successfully");
     fetchAll();
+    setTimeout(()=>setSuccessMsg(""),2000);
   };
 
   const deleteProject = async (id) => {
@@ -131,7 +135,7 @@ if (!title.trim() || !description.trim()) {
 
   formRef.current?.scrollIntoView({ behavior: "smooth" });
 };
-  // Decode user
+
   let userEmail = "";
   try {
     const token = localStorage.getItem("token");
@@ -172,7 +176,8 @@ if (!title.trim() || !description.trim()) {
           saveTask={saveTask}
 editingTaskId={editingTaskId}
 onEdit={handleEdit}
-
+successMsg={successMsg}
+setSuccessMsg={setSuccessMsg}
 formRef={formRef}
         />
       </div>

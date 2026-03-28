@@ -4,57 +4,79 @@ import axios from "axios";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error,setError]=useState("");
-const handleLogin = async () => {
-  try {
-    if (!email.trim() || !password.trim()) {
-      setError("Email and Password required");
-      return;
-    }
-    const res = await axios.post("http://localhost:8081/auth/login", {
-      email,
-      password,
-    });
-    //save token
-if(!res.data || typeof res.data !=="string" || res.data.split(".").length !==3){
-  setError("Invalid email or password ");
-  return;
-}
-    localStorage.setItem("token",res.data);
-    window.location.href="/dashboard";
-
-  } catch (err) {
-    alert("Invalid email or password"); 
-  }
-};
- 
-  return (
-    <div className="card p-4 shadow">
-      <h2>Login</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) =>{ setEmail(e.target.value);
-        setError("");
-        }}
-      /><br/>
-
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => {setPassword(e.target.value);
-          setError("");
-        }}
-      /><br/>
-      {
-        error && (
-          <div className="alert alert-danger mt-2 p-2">{error}</div>
-        )
+  const [error, setError] = useState("");
+  const handleLogin = async () => {
+    try {
+      if (!email.trim() || !password.trim()) {
+        setError("Email and Password required");
+        return;
       }
-      <button onClick={handleLogin}>Login</button>
-      <p>
-  Don’t have an account? <a href="/register">Register</a>
-</p>
+      const res = await axios.post("http://localhost:8081/auth/login", {
+        email,
+        password,
+      });
+      //save token
+      if (
+        !res.data ||
+        typeof res.data !== "string" ||
+        res.data.split(".").length !== 3
+      ) {
+        setError("Invalid email or password ");
+        return;
+      }
+      localStorage.setItem("token", res.data);
+      window.location.href = "/dashboard";
+    } catch (err) {
+      alert("Invalid email or password");
+    }
+  };
+
+  return (
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="card p-4 shadow w-100" style={{ maxWidth: "400px" }}>
+        <h3 className="text-center mb-4">Login</h3>
+
+        <div className="mb-3">
+          <label className="form-label text-start d-block">Email</label>
+          <input
+            type="email"
+            className={`form-control ${error ? "is-invalid" : ""}`}
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError("");
+            }}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label text-start d-block">Password</label>
+          <input
+            type="password"
+            className={`form-control ${error ? "is-invalid" : ""}`}
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError("");
+            }}
+          />
+        </div>
+
+        {error && <div className="alert alert-danger py-2">{error}</div>}
+
+        <button className="btn btn-primary w-100" onClick={handleLogin}>
+          Login
+        </button>
+
+        <p className="text-center mt-3 mb-0">
+          Don’t have an account?{" "}
+          <a href="/register" className="text-decoration-none">
+            Register
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

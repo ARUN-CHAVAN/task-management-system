@@ -52,34 +52,52 @@ function Register() {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card p-4 shadow">
-        <h2>Register</h2>
+  <div className="container d-flex justify-content-center align-items-center vh-100">
+    <div className="card p-4 shadow w-100" style={{ maxWidth: "400px" }}>
+      <h3 className="text-center mb-4">Create Account</h3>
+
+    
+      <div className="mb-3">
+        <label className="form-label text-start d-block">Name</label>
         <input
-          className="form-control mb-1"
-          placeholder="Name"
+          className={`form-control ${errors.name ? "is-invalid" : ""}`}
+          placeholder="Enter your name"
           value={name}
           onChange={(e) => {
             setName(e.target.value);
             setErrors((prev) => ({ ...prev, name: "" }));
           }}
         />
-        {errors.name && <small className="text-danger">{errors.name}</small>}
+        {errors.name && (
+          <div className="invalid-feedback">{errors.name}</div>
+        )}
+      </div>
+
+  
+      <div className="mb-3">
+        <label className="form-label text-start d-block">Email</label>
         <input
-          className="form-control mb-1"
-          placeholder="Email"
+          type="email"
+          className={`form-control ${errors.email ? "is-invalid" : ""}`}
+          placeholder="Enter your email"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
             setErrors((prev) => ({ ...prev, email: "" }));
           }}
         />
-        {errors.email && <small className="text-danger">{errors.email}</small>}
+        {errors.email && (
+          <div className="invalid-feedback">{errors.email}</div>
+        )}
+      </div>
 
+    
+      <div className="mb-3">
+        <label className="form-label text-start d-block">Password</label>
         <input
           type="password"
-          className="form-control mb-1"
-          placeholder="Password"
+          className={`form-control ${errors.password ? "is-invalid" : ""}`}
+          placeholder="Enter your password"
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
@@ -87,20 +105,30 @@ function Register() {
           }}
         />
         {errors.password && (
-          <small className="text-danger">{errors.password}</small>
+          <div className="invalid-feedback">{errors.password}</div>
         )}
-
-        {errors.api && <div className="text-danger mt-2">{errors.api}</div>}
-
-        <button className="btn btn-success mt-3" onClick={registerUser}>
-          Register
-        </button>
-        <p>
-  Already have an account? <a href="/">Login</a>
-</p>
       </div>
+
+    
+      {errors.api && (
+        <div className="alert alert-danger py-2">{errors.api}</div>
+      )}
+
+      
+      <button className="btn btn-success w-100" onClick={registerUser}>
+        Register
+      </button>
+
+    
+      <p className="text-center mt-3 mb-0">
+        Already have an account?{" "}
+        <a href="/" className="text-decoration-none">
+          Login
+        </a>
+      </p>
     </div>
-  );
+  </div>
+);
 }
 
 export default Register;
