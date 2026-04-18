@@ -41,7 +41,7 @@ function Register() {
     }
 
     try {
-      await axios.post("http://localhost:8081/auth/register", {
+      await axios.post("https://task-backend-zbtj.onrender.com/auth/register", {
         name,
         email,
         password,
