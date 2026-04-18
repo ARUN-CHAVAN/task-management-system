@@ -37,22 +37,28 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || token.split(".").length !==3) {
-      localStorage.clear();
-      window.location.href = "/login";
-      return;
-    }
+  const token = localStorage.getItem("token");
+
+  if (token && token.split(".").length === 3) {
     fetchAll();
-  }, []);
+  }
+}, []);
 
   const saveTask = async () => {
+
+    const token=localStorage.getItem("token");
+    if(!token){
+    alert("Please login first");
+    //navigate("/login");
+    return;
+  }
+
 
 if (!title.trim() || !description.trim()) {
     alert("Title and Description are required");
     return;
   }
-
+  
   if (!selectedProjectId) {
     alert("Please select a project");
     return;
@@ -78,6 +84,7 @@ if (!title.trim() || !description.trim()) {
       title,
       description,
       status: "pending",
+      deadline: deadline || null,
       project: selectedProjectId ? { id: selectedProjectId } : null,
       assignedTo: selectedUserId ? { id: selectedUserId } : null,
     });
@@ -89,6 +96,7 @@ if (!title.trim() || !description.trim()) {
   setSelectedProjectId("");
   setSelectedUserId("");
   setEditingTaskId(null);
+  setDeadline("");
 
   fetchAll();
 };
@@ -103,7 +111,16 @@ if (!title.trim() || !description.trim()) {
   };
 
   const createProject = async () => {
-    if (!projectName) return;
+    const token=localStorage.getItem("token");
+    if(!token){
+    alert("Please login first");
+    //navigate("/login");
+    return;
+  }
+    if (!projectName.trim()){
+      alert("Project name is required");
+     return;
+    }
 
     await API.post("/projects", {
       name: projectName,
@@ -123,7 +140,7 @@ if (!title.trim() || !description.trim()) {
 
   const logout = () => {
     localStorage.clear();
-    navigate("/login");
+    navigate("/dashboard");
   };
  const handleEdit = (task) => {
   setTitle(task.title);
@@ -143,11 +160,19 @@ if (!title.trim() || !description.trim()) {
       userEmail = jwtDecode(token).sub;
     }
   } catch {}
-
+const token = localStorage.getItem("token");
   return (
-    <div className="container mt-4">
-      <Navbar userEmail={userEmail} logout={logout} />
-
+    <div className="container mt-4">   
+<Navbar 
+  userEmail={userEmail} 
+  logout={logout} 
+  isLoggedIn={!!token}
+/>
+{!localStorage.getItem("token") && (
+  <div className="alert alert-warning">
+    Please login to use features
+  </div>
+)}
       <div className="row">
         <ProjectSection
           projectName={projectName}

@@ -15,12 +15,18 @@ function Register() {
       newErrors.name = "Name is required";
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!email.trim()) {
       newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Enter valid email example@gmail.com";
     }
 
     if (!password.trim()) {
       newErrors.password = "Password is required";
+    } else if (password.length < 4) {
+      newErrors.password = "Password must be at least 4 characters";
     }
 
     return newErrors;
@@ -35,7 +41,7 @@ function Register() {
     }
 
     try {
-      await axios.post("https://task-backend-production-9d85.up.railway.app/auth/register", {
+      await axios.post("http://localhost:8081/auth/register", {
         name,
         email,
         password,
@@ -52,83 +58,75 @@ function Register() {
   };
 
   return (
-  <div className="container d-flex justify-content-center align-items-center vh-100">
-    <div className="card p-4 shadow w-100" style={{ maxWidth: "400px" }}>
-      <h3 className="text-center mb-4">Create Account</h3>
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="card p-4 shadow w-100" style={{ maxWidth: "400px" }}>
+        <h3 className="text-center mb-4">Create Account</h3>
 
-    
-      <div className="mb-3">
-        <label className="form-label text-start d-block">Name</label>
-        <input
-          className={`form-control ${errors.name ? "is-invalid" : ""}`}
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            setErrors((prev) => ({ ...prev, name: "" }));
-          }}
-        />
-        {errors.name && (
-          <div className="invalid-feedback">{errors.name}</div>
+        <div className="mb-3">
+          <label className="form-label text-start d-block">Name</label>
+          <input
+            className={`form-control ${errors.name ? "is-invalid" : ""}`}
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              setErrors((prev) => ({ ...prev, name: "" }));
+            }}
+          />
+          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label text-start d-block">Email</label>
+          <input
+            type="email"
+            className={`form-control ${errors.email ? "is-invalid" : ""}`}
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors((prev) => ({ ...prev, email: "" }));
+            }}
+          />
+          {errors.email && (
+            <div className="invalid-feedback">{errors.email}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label text-start d-block">Password</label>
+          <input
+            type="password"
+            className={`form-control ${errors.password ? "is-invalid" : ""}`}
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrors((prev) => ({ ...prev, password: "" }));
+            }}
+          />
+          {errors.password && (
+            <div className="invalid-feedback">{errors.password}</div>
+          )}
+        </div>
+
+        {errors.api && (
+          <div className="alert alert-danger py-2">{errors.api}</div>
         )}
+
+        <button className="btn btn-success w-100" onClick={registerUser}>
+          Register
+        </button>
+
+        <p className="text-center mt-3 mb-0">
+          Already have an account?{" "}
+          <a href="/login" className="text-decoration-none">
+            Login
+          </a>
+        </p>
       </div>
-
-  
-      <div className="mb-3">
-        <label className="form-label text-start d-block">Email</label>
-        <input
-          type="email"
-          className={`form-control ${errors.email ? "is-invalid" : ""}`}
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrors((prev) => ({ ...prev, email: "" }));
-          }}
-        />
-        {errors.email && (
-          <div className="invalid-feedback">{errors.email}</div>
-        )}
-      </div>
-
-    
-      <div className="mb-3">
-        <label className="form-label text-start d-block">Password</label>
-        <input
-          type="password"
-          className={`form-control ${errors.password ? "is-invalid" : ""}`}
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrors((prev) => ({ ...prev, password: "" }));
-          }}
-        />
-        {errors.password && (
-          <div className="invalid-feedback">{errors.password}</div>
-        )}
-      </div>
-
-    
-      {errors.api && (
-        <div className="alert alert-danger py-2">{errors.api}</div>
-      )}
-
-      
-      <button className="btn btn-success w-100" onClick={registerUser}>
-        Register
-      </button>
-
-    
-      <p className="text-center mt-3 mb-0">
-        Already have an account?{" "}
-        <a href="/" className="text-decoration-none">
-          Login
-        </a>
-      </p>
     </div>
-  </div>
-);
+  );
 }
 
 export default Register;

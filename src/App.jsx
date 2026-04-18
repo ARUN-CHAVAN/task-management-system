@@ -4,17 +4,18 @@ import Login from "../src/Login-Components/Login";
 import Dashboard from "../src/MainPages/Dashboard";
 
 function App() {
-  const token = localStorage.getItem("token");
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/register" element={<Register />} /> 
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={token ? <Dashboard /> : <Login />} />
-         <Route path="*" element={<Login />} />
+
+        <Route path="/" element={<Dashboard />} />
+
+        <Route path="*" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
-} 
+}
 
 export default App;

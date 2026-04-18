@@ -27,7 +27,7 @@ function TaskSection({
       {successMsg &&(<div className="alert alert-success text-center">{successMsg}</div>
         )}
       <select
-        className="form-control mb-2"
+        className="form-control mb-2 mt-5"
         value={selectedProjectId}
         onChange={(e) => setSelectedProjectId(e.target.value)}
       >
@@ -52,7 +52,7 @@ function TaskSection({
         ))}
       </select>
 
-      <h4>Create Task</h4>
+      <h4 className="mt-4"> Create Task</h4>
 
       <input
         className="form-control mb-2"
@@ -67,11 +67,12 @@ function TaskSection({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <label className="text-start d-block mt-1">Select Deadline</label>
+      <label className="text-start d-block mt-1 p-2">Select Deadline</label>
+
       <input
         type="date"
         className="form-control mb-2"
-        value={deadline || ""}
+        value={deadline}
         onChange={(e) => setDeadline(e.target.value)}
       />
       <button className="btn btn-primary mb-3" onClick={saveTask}>

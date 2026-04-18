@@ -16,7 +16,7 @@ function ProjectSection({
         onChange={(e) => setProjectName(e.target.value)}
       />
 
-      <button className="btn btn-primary mb-3" onClick={createProject}>
+      <button className="btn btn-primary mb-3" onClick={createProject} disabled={!projectName.trim()}>
         Add Project
       </button>
 

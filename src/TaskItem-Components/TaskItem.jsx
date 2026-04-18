@@ -6,18 +6,23 @@ function TaskItem({ task, updateStatus, deleteTask, onEdit }) {
 
     if (!task.deadline) return "No deadline";
 
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date();
+    const deadlineDate = new Date(task.deadline);
 
-    if (task.deadline < today) return "Overdue";
-    if (task.deadline === today) return "Today";
-    if(task.deadline>today) return "Upcoming";
+    today.setHours(0, 0, 0, 0);
+    deadlineDate.setHours(0, 0, 0, 0);
+
+    if (deadlineDate < today) return "Overdue";
+    if (deadlineDate.getTime() === today.getTime()) return "Today";
+    return "Upcoming";
   };
   const deadlineStatus = getDeadlineStatus(task);
   return (
     <div className="card mb-3 p-3 w-100">
-      <h5 className="fw-bold"
+      <h5
+        className="fw-bold"
         style={{
-          textDecoration: task.status === "complete" ? "line-through" : "non",
+          textDecoration: task.status === "complete" ? "line-through" : "none",
         }}
       >
         {task.title}
@@ -25,7 +30,9 @@ function TaskItem({ task, updateStatus, deleteTask, onEdit }) {
       <p>{task.description}</p>
 
       <p className="mb-1">Project: {task.project?.name || "No Project"}</p>
-      <p className="mb-1">Assigned To: {task.assignedTo?.name || "Not Assigned"}</p>
+      <p className="mb-1">
+        Assigned To: {task.assignedTo?.name || "Not Assigned"}
+      </p>
 
       <p className="mb-1">
         Status:
@@ -38,7 +45,12 @@ function TaskItem({ task, updateStatus, deleteTask, onEdit }) {
           {task.status}
         </span>
       </p>
-      <p>Deadline: {task.deadline ? task.deadline : "No deadline"}</p>
+      <p>
+        Deadline:{" "}
+        {task.deadline
+          ? new Date(task.deadline).toLocaleDateString()
+          : "No deadline"}
+      </p>
 
       <p>
         Deadline Status:{" "}
@@ -63,11 +75,17 @@ function TaskItem({ task, updateStatus, deleteTask, onEdit }) {
         >
           <FaCheck /> Complete
         </button>
-        <button className="btn btn-warning flex-fill" onClick={() => onEdit(task)}>
+        <button
+          className="btn btn-warning flex-fill"
+          onClick={() => onEdit(task)}
+        >
           Edit
         </button>
 
-        <button className="btn btn-danger flex-fill" onClick={() => deleteTask(task.id)}>
+        <button
+          className="btn btn-danger flex-fill"
+          onClick={() => deleteTask(task.id)}
+        >
           <FaTrash /> Delete
         </button>
       </div>

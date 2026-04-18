@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://task-backend-production-9d85.up.railway.app",
+  baseURL: "http://localhost:8081",
 });
 
 API.interceptors.request.use((req) => {
@@ -11,5 +11,17 @@ API.interceptors.request.use((req) => {
   }
   return req;
 });
+let isRedirecting=false;
+API.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response && err.response.status === 401 && !isRedirecting) {
+      isRedirecting=true;
+      //alert("Please login first");
+      setTimeout(()=>(isRedirecting=false),2000);
+    }
+    return Promise.reject(err);
+  }
+);
 
 export default API;
